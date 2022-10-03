@@ -34,6 +34,7 @@ type Producer struct {
 	MQErrorCount *uint64
 
 	Topic string
+	Key   string
 	Chan  chan []byte
 
 	Logger *log.Logger
@@ -42,18 +43,14 @@ type Producer struct {
 // MQueue represents messaging queue methods
 type MQueue interface {
 	setup(string, *log.Logger) error
-	inputMsg(string, chan []byte, *uint64)
+	inputMsg(string, chan []byte, string, *uint64)
 }
 
 // NewProducer constructs new Messaging Queue
 func NewProducer(mqName string) *Producer {
 	var mqRegistered = map[string]MQueue{
-		"kafka":           new(KafkaSarama),
-		"kafka.sarama":    new(KafkaSarama),
-		"kafka.segmentio": new(KafkaSegmentio),
-		"nsq":             new(NSQ),
-		"nats":            new(NATS),
-		"rawSocket":       new(RawSocket),
+		"kafka":        new(KafkaSarama),
+		"kafka.sarama": new(KafkaSarama),
 	}
 
 	return &Producer{
@@ -77,7 +74,7 @@ func (p *Producer) Run() error {
 	go func() {
 		defer wg.Done()
 		topic := p.Topic
-		p.MQ.inputMsg(topic, p.Chan, p.MQErrorCount)
+		p.MQ.inputMsg(topic, p.Chan, p.Key, p.MQErrorCount)
 	}()
 
 	wg.Wait()

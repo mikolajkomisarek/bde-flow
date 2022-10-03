@@ -124,6 +124,7 @@ func (i *NetflowV9) run() {
 		p.MQErrorCount = &i.stats.MQErrorCount
 		p.Logger = logger
 		p.Chan = netflowV9MQCh
+		p.Key = i.addr
 		p.Topic = opts.NetflowV9Topic
 
 		if err := p.Run(); err != nil {

@@ -34,7 +34,7 @@ func (k *MQMock) setup(configFile string, logger *log.Logger) error {
 	return nil
 }
 
-func (k *MQMock) inputMsg(topic string, mCh chan []byte, ec *uint64) {
+func (k *MQMock) inputMsg(topic string, mCh chan []byte, key string, ec *uint64) {
 	for {
 		msg, ok := <-mCh
 		if !ok {
