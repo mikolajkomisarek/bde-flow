@@ -150,8 +150,10 @@ func (k *KafkaSarama) inputMsg(topic string, mCh chan []byte, ec *uint64) {
 
 		select {
 		case k.producer.Input() <- &sarama.ProducerMessage{
+			Key: sarama.StringEncoder("BDE"),
 			Topic: topic,
 			Value: sarama.ByteEncoder(msg),
+			Timestamp: time.Now(),
 		}:
 		case err := <-k.producer.Errors():
 			k.logger.Println(err)
