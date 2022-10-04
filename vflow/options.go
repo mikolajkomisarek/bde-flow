@@ -58,7 +58,6 @@ type Options struct {
 
 	// stats options
 	StatsEnabled  bool   `yaml:"stats-enabled"`
-	StatsFormat   string `yaml:"stats-format"`
 	StatsHTTPAddr string `yaml:"stats-http-addr"`
 	StatsHTTPPort string `yaml:"stats-http-port"`
 
@@ -146,7 +145,6 @@ func NewOptions() *Options {
 		Logger:     log.New(os.Stderr, "[vflow] ", log.Ldate|log.Ltime),
 
 		StatsEnabled:  true,
-		StatsFormat:   "prometheus",
 		StatsHTTPPort: "8081",
 		StatsHTTPAddr: "",
 
@@ -317,7 +315,6 @@ func (opts *Options) flagSet() {
 
 	// stats options
 	flag.BoolVar(&opts.StatsEnabled, "stats-enabled", opts.StatsEnabled, "enable/disable stats listener")
-	flag.StringVar(&opts.StatsFormat, "stats-format", opts.StatsFormat, "stats format")
 	flag.StringVar(&opts.StatsHTTPPort, "stats-http-port", opts.StatsHTTPPort, "stats port listener")
 	flag.StringVar(&opts.StatsHTTPAddr, "stats-http-addr", opts.StatsHTTPAddr, "stats bind address listener")
 
